@@ -1,36 +1,230 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Assisted Shopping — assistedshopping.online
 
-## Getting Started
+Marketing website for **Assisted Shopping**, an independent, human-led, paid
+shopping-assistance service for customers in the United States.
 
-First, run the development server:
+The site has one main conversion: **a phone call**. Every design decision
+supports this path:
+
+> Recognize the problem → understand the human-led solution → trust the
+> independent positioning → understand the service is paid → call.
+
+> **Before launch, read [`LAUNCH_CHECKLIST.md`](LAUNCH_CHECKLIST.md).** The
+> phone number is a placeholder and several business details are still to be
+> supplied.
+
+---
+
+## Stack
+
+- [Next.js 16](https://nextjs.org) (App Router, Turbopack, statically prerendered)
+- React 19 + TypeScript
+- Tailwind CSS v4 (design tokens in `src/app/globals.css`)
+- [Lucide](https://lucide.dev) icons
+- Geist / Geist Mono fonts via `next/font` (self-hosted at build time)
+
+No backend or database is included. The only third-party script is the
+Google tag (gtag.js) for Google Ads.
+
+## Requirements
+
+- Node.js **20.9 or newer** (developed on Node 24 LTS)
+- npm
+
+## Setup and development
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+cp .env.example .env.local   # optional, see "Environment variables"
+npm run dev                  # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+| Command         | What it does                                  |
+| --------------- | --------------------------------------------- |
+| `npm run dev`   | Start the dev server with hot reload          |
+| `npm run lint`  | Run ESLint (Next.js core-web-vitals + TS)     |
+| `npm run build` | Create a production build                     |
+| `npm run start` | Serve the production build locally            |
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Replacing the phone number (required before launch)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The number appears in the header, hero, every section CTA, the mobile call
+bar, the contact page, the 404 page, and the footer — but it is defined in
+**one place**:
 
-## Learn More
+```ts
+// src/config/site.ts
+export const phone = {
+  display: "+1 (800) 555-0147",  // shown on the page
+  e164: "+18005550147",          // used for the tel: link
+  isPlaceholder: true,           // set to false once the real number is verified
+};
+```
 
-To learn more about Next.js, take a look at the following resources:
+1. Replace `display` and `e164` with the real business number.
+2. Call it from a mobile phone and confirm it reaches the business.
+3. Set `isPlaceholder: false`. This removes the yellow "Preview site" notice
+   at the top of every page and silences the warning printed during
+   `npm run build`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+To confirm nothing is hard-coded elsewhere:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+grep -rn "555-0147\|18005550147" src --include=*.ts --include=*.tsx
+```
 
-## Deploy on Vercel
+Only `src/config/site.ts` should match.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Environment variables
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+See [`.env.example`](.env.example).
+
+| Variable                     | Purpose                                                                                                   |
+| ---------------------------- | --------------------------------------------------------------------------------------------------------- |
+| `NEXT_PUBLIC_ALLOW_INDEXING` | Set to `true` **only in production**. Otherwise `robots.txt` disallows all crawling (safe for previews).  |
+| `NEXT_PUBLIC_FORM_ENDPOINT`  | URL that receives the contact form as JSON (`POST`). Empty = form stays in labelled prototype mode.       |
+
+`NEXT_PUBLIC_*` values are inlined at build time — rebuild after changing them.
+
+## Project structure
+
+```
+src/
+  app/
+    layout.tsx            Root layout, global metadata, header/footer/mobile bar
+    page.tsx              Homepage (assembles the sections below)
+    about/ contact/ privacy/ terms/ refund-policy/
+    not-found.tsx         404 page
+    sitemap.ts robots.ts  SEO routes
+    opengraph-image.tsx   Generated social-share image
+    icon.svg apple-icon.tsx
+    globals.css           Design tokens + base styles
+  config/site.ts          ← brand, PHONE, CTA labels, nav, services, legal links, feature flags
+  content/faq.ts          FAQ questions/answers (also feeds FAQPage JSON-LD)
+  components/
+    PhoneCTA.tsx          The reusable call button (+ PhoneNumberLink)
+    IndependenceDisclosure.tsx
+    SiteHeader.tsx MobileCallBar.tsx SiteFooter.tsx Logo.tsx
+    PlaceholderNotice.tsx  Shown while phone.isPlaceholder is true
+    ServiceRequestForm.tsx Secondary contact form (client-side validation)
+    CtaClickTracker.tsx    Delegated, privacy-safe click tracking for data-cta links
+    LegalPage.tsx
+    sections/             HeroSection, ProblemCards, ServiceCategoryCards,
+                          HumanGuidanceSection, PaidServiceSection, HowItWorks,
+                          TrustSection, Testimonials (hidden), FAQSection/FAQAccordion,
+                          FinalCallToAction
+    ui/                   Container, SectionHeading, PageHeader, ReviewNote
+  lib/
+    analytics.ts          trackCtaClick() — no-op unless an analytics tool is installed
+    serviceRequest.ts     Form integration point
+```
+
+### Adding a service category
+
+Add an object to `services` in `src/config/site.ts`. It appears automatically
+in the homepage grid (with an anchor `/#<id>`), the footer, and the contact
+form dropdown. Pick an icon key from `ServiceIcon` or add one in
+`ServiceCategoryCards.tsx`.
+
+### Editing copy
+
+- Disclosures and CTA labels: `src/config/site.ts`
+- FAQ: `src/content/faq.ts`
+- Section copy: the matching file in `src/components/sections/`
+
+## Contact form
+
+`/contact` has a short secondary form (first name, email **or** phone,
+assistance type, description, consent). It never collects passwords, account
+numbers, card data, or one-time codes, and it rejects descriptions that look
+like they contain a card number or code.
+
+Without `NEXT_PUBLIC_FORM_ENDPOINT` the form validates input, sends nothing,
+and tells the visitor so. With it set, the form `POST`s JSON to the endpoint
+and shows a success message **only** on a 2xx response. Integration logic:
+`src/lib/serviceRequest.ts`.
+
+## Call pop-up
+
+`src/components/CallPopup.tsx` shows a call-to-action dialog once per
+browser session (tracked in `sessionStorage`), 12 s after the first page
+loads. It waits if the tab is in the background, and it is skipped if the
+visitor has already tapped a call button. It uses the native `<dialog>` element: focus moves into it, Escape,
+the close button, "Not now", or a backdrop click dismisses it. Settings live
+in `popup` in `src/config/site.ts` (`enabled`, `delayMs`). It sends a
+`cta_popup_shown` event to the Google tag; its call button is tracked as
+`cta_id: "popup"`.
+
+Keep its copy honest: no invented discounts, "free" claims, countdowns, or
+availability promises.
+
+## Analytics
+
+**Google tag (Google Ads `AW-18430161458`)** loads on every page via
+`src/components/GoogleTag.tsx`. Change or remove it with `googleTag.id` in
+`src/config/site.ts` (set to `null` to remove).
+
+Every phone link carries a `data-cta="<location>"` attribute.
+`CtaClickTracker` sends each click to the Google tag as
+`gtag("event", "cta_call_click", { cta_id, page_path })` and dispatches an
+`as:cta-click` DOM event.
+
+To count call-button clicks as a Google Ads conversion, create a conversion
+action in Google Ads and put its `send_to` value (e.g.
+`AW-18430161458/AbCdEf…`) in `CONVERSION_SEND_TO` in `src/lib/analytics.ts`.
+
+A CTA click is **not** a completed call. Do not report clicks as calls. For
+real call conversions, use Google Ads call tracking / your telephony
+provider's reporting.
+
+## SEO
+
+- Title, description, Open Graph and Twitter metadata in `src/app/layout.tsx`;
+  per-page titles/descriptions/canonicals in each `page.tsx`.
+- `metadataBase` and canonical URLs use `site.url`
+  (`https://assistedshopping.online`).
+- `/sitemap.xml` lists public pages; update `LAST_MODIFIED` in
+  `src/app/sitemap.ts` when content changes.
+- `/robots.txt` blocks crawling unless `NEXT_PUBLIC_ALLOW_INDEXING=true`.
+- Structured data: **FAQPage only**, mirroring the visible FAQ. No
+  LocalBusiness, reviews, ratings, or address data are published, because none
+  have been verified.
+
+## Deployment
+
+The site is fully static at runtime and works on any Next.js host.
+
+**Vercel (simplest):** import the repository, keep the default build settings,
+set the environment variables for Production, and add the
+`assistedshopping.online` domain (and redirect `www` to the apex, or vice
+versa — keep it consistent with `site.url`).
+
+**Self-hosted Node:**
+
+```bash
+npm ci
+NEXT_PUBLIC_ALLOW_INDEXING=true npm run build
+npm run start   # behind a reverse proxy with HTTPS
+```
+
+Basic security headers (`X-Content-Type-Options`, `Referrer-Policy`,
+`X-Frame-Options`, `Permissions-Policy`) are set in `next.config.ts`.
+
+## Accessibility notes
+
+Target: WCAG 2.2 AA. Includes a skip link, one `h1` per page, ordered heading
+levels, visible focus rings, a WAI-ARIA accordion for the FAQ, an accessible
+mobile menu (`aria-expanded`, Escape to close, focus return), labelled form
+fields with linked error messages and an error summary, 44px+ tap targets,
+`prefers-reduced-motion` support, and icons paired with text so nothing relies
+on colour alone. CTA buttons use black text on orange (`#FF6A00`, ≈7:1).
+
+## Brand and content rules
+
+- The identity (speech-bubble cart mark with a check badge, black + orange system, receipt and
+  measuring-tape motifs) is original. Do not add retailer logos, names in
+  titles/metadata, screenshots, product photography, or uniforms.
+- Do not add testimonials, ratings, review badges, customer counts, savings
+  figures, response-time promises, "agents online" indicators, countdowns, or
+  partnerships unless they are real and verified. `features.showTestimonials`
+  stays `false` until real, authorized feedback exists.

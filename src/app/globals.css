@@ -1,26 +1,137 @@
 @import "tailwindcss";
 
+/* -----------------------------------------------------------------------------
+ * Assisted Shopping design tokens
+ * Black base, neutral surfaces, orange reserved for action.
+ * -------------------------------------------------------------------------- */
+@theme {
+  --color-ink: #050505;
+  --color-surface: #141414;
+  --color-surface-2: #1d1d1d;
+  --color-surface-3: #262626;
+  --color-line: #303030;
+  --color-line-strong: #454545;
+  --color-fg: #f7f7f7;
+  --color-muted: #b8b8b8;
+  --color-subtle: #8f8f8f;
+  --color-accent: #ff6a00;
+  --color-accent-hover: #e85f00;
+  --color-accent-soft: #2a1606;
+  --color-ok: #4ade80;
+  --color-ok-soft: #0d2416;
+  --color-review: #fcd34d;
+
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
+
+  --radius-card: 0.625rem;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: dark;
+  /* Height of the sticky header, used for anchor offsets. */
+  --header-h: 4.25rem;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+html {
+  background: var(--color-ink);
+  scroll-padding-top: calc(var(--header-h) + 1rem);
+  -webkit-text-size-adjust: 100%;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-ink);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: #000;
+}
+
+/* Visible, consistent focus indicator for every interactive element. */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Remove motion for people who ask for less of it. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@keyframes popup-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Faint grid used behind the hero and final CTA — an original texture
+   that nods to graph-paper shopping lists. */
+.bg-grid {
+  background-image:
+    linear-gradient(to right, rgb(255 255 255 / 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(255 255 255 / 0.035) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+/* Long-form legal / about content. */
+.prose-legal h2 {
+  font-size: 1.375rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin-top: 2.75rem;
+  margin-bottom: 0.875rem;
+  color: var(--color-fg);
+}
+.prose-legal h3 {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  margin-top: 1.75rem;
+  margin-bottom: 0.5rem;
+  color: var(--color-fg);
+}
+.prose-legal p,
+.prose-legal li {
+  color: var(--color-muted);
+  line-height: 1.75;
+}
+.prose-legal p + p {
+  margin-top: 1rem;
+}
+.prose-legal ul {
+  list-style: disc;
+  padding-left: 1.25rem;
+  margin-top: 0.75rem;
+  display: grid;
+  gap: 0.5rem;
+}
+.prose-legal a {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.prose-legal strong {
+  color: var(--color-fg);
+  font-weight: 600;
 }
