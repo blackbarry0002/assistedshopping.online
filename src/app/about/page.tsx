@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   title: "About Our Independent Shopping Service",
   description:
     "Assisted Shopping is an independent, paid, human-led shopping service. Learn what we do, what we don't do, and how we work with customers.",
-  alternates: { canonical: "/about" },
+  alternates: { canonical: "/about/" },
 };
 
 export default function AboutPage() {

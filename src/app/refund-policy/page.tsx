@@ -7,7 +7,7 @@ import { site } from "@/config/site";
 export const metadata: Metadata = {
   title: "Refund & Cancellation Policy",
   description: `How cancellations and refunds work for ${site.name}'s paid shopping-assistance services.`,
-  alternates: { canonical: "/refund-policy" },
+  alternates: { canonical: "/refund-policy/" },
 };
 
 export default function RefundPolicyPage() {

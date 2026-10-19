@@ -7,7 +7,7 @@ import { business, site } from "@/config/site";
 export const metadata: Metadata = {
   title: "Terms of Service",
   description: `Terms that apply to ${site.name}'s independent, paid shopping-assistance service.`,
-  alternates: { canonical: "/terms" },
+  alternates: { canonical: "/terms/" },
 };
 
 export default function TermsPage() {

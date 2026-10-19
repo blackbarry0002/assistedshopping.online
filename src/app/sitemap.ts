@@ -1,17 +1,20 @@
 import type { MetadataRoute } from "next";
 import { site } from "@/config/site";
 
+// Pre-render at build time (required for the static export to GitHub Pages).
+export const dynamic = "force-static";
+
 // Update when page content changes materially.
 const LAST_MODIFIED = "2026-10-19";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const routes: { path: string; priority: number }[] = [
     { path: "", priority: 1 },
-    { path: "/about", priority: 0.7 },
-    { path: "/contact", priority: 0.7 },
-    { path: "/terms", priority: 0.3 },
-    { path: "/privacy", priority: 0.3 },
-    { path: "/refund-policy", priority: 0.3 },
+    { path: "/about/", priority: 0.7 },
+    { path: "/contact/", priority: 0.7 },
+    { path: "/terms/", priority: 0.3 },
+    { path: "/privacy/", priority: 0.3 },
+    { path: "/refund-policy/", priority: 0.3 },
   ];
   return routes.map((r) => ({
     url: `${site.url}${r.path}`,

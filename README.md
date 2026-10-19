@@ -190,25 +190,33 @@ provider's reporting.
   LocalBusiness, reviews, ratings, or address data are published, because none
   have been verified.
 
-## Deployment
+## Deployment (GitHub Pages)
 
-The site is fully static at runtime and works on any Next.js host.
+The site is a **static export** (`output: "export"` in `next.config.ts`) and is
+deployed to GitHub Pages by `.github/workflows/nextjs.yml` on every push to
+`main`:
 
-**Vercel (simplest):** import the repository, keep the default build settings,
-set the environment variables for Production, and add the
-`assistedshopping.online` domain (and redirect `www` to the apex, or vice
-versa — keep it consistent with `site.url`).
+1. `next build` writes the complete site to `./out`.
+2. The workflow uploads `./out` as the Pages artifact and deploys it.
 
-**Self-hosted Node:**
+Repository settings that must stay in place:
 
-```bash
-npm ci
-NEXT_PUBLIC_ALLOW_INDEXING=true npm run build
-npm run start   # behind a reverse proxy with HTTPS
-```
+- **Settings → Pages → Source:** GitHub Actions.
+- **Settings → Pages → Custom domain:** `assistedshopping.online`, with
+  "Enforce HTTPS" enabled once the certificate is issued. `public/CNAME`
+  carries the same domain.
+- **DNS:** apex `A` records to GitHub Pages (185.199.108.153, .109.153,
+  .110.153, .111.153) and `AAAA` records (2606:50c0:8000::153 … 8003::153);
+  `www` as a `CNAME` to `blackbarry0002.github.io`.
 
-Basic security headers (`X-Content-Type-Options`, `Referrer-Policy`,
-`X-Frame-Options`, `Permissions-Policy`) are set in `next.config.ts`.
+Indexing is controlled by `NEXT_PUBLIC_ALLOW_INDEXING` in the workflow's build
+step (currently `"false"`). Set it to `"true"` once the real phone number is
+live.
+
+Static hosting limits: no server code, no custom HTTP headers (security
+headers would need a CDN such as Cloudflare in front of Pages), and the
+share image / Apple icon are static PNGs in `src/app/`. To preview the export
+locally: `npm run build && python3 -m http.server --directory out`.
 
 ## Accessibility notes
 

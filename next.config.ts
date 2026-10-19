@@ -11,8 +11,16 @@ if (process.env.NODE_ENV === "production" && phone.isPlaceholder) {
 }
 
 const nextConfig: NextConfig = {
-  cacheComponents: true,
-  partialPrefetching: true,
+  // The site is hosted on GitHub Pages, which only serves static files.
+  // `next build` writes the whole site to ./out (see .github/workflows/nextjs.yml).
+  // Static export can't set HTTP response headers, so security headers would
+  // need a CDN in front of Pages (e.g. Cloudflare) if they're required.
+  output: "export",
+  // Emit /about/index.html etc., so every route works on a plain static host.
+  trailingSlash: true,
+  images: { unoptimized: true },
+  // Cache Components / Partial Prefetching are server features and are
+  // incompatible with the `force-static` metadata routes a static export needs.
   poweredByHeader: false,
   turbopack: {
     rules: {
@@ -21,19 +29,6 @@ const nextConfig: NextConfig = {
         as: "*.css",
       },
     },
-  },
-  async headers() {
-    return [
-      {
-        source: "/:path*",
-        headers: [
-          { key: "X-Content-Type-Options", value: "nosniff" },
-          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-          { key: "X-Frame-Options", value: "DENY" },
-          { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
-        ],
-      },
-    ];
   },
 };
 

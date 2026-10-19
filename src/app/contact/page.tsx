@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   title: "Contact",
   description:
     "Call Assisted Shopping to discuss independent, paid help with product research, comparisons, and shopping lists — or send a short request.",
-  alternates: { canonical: "/contact" },
+  alternates: { canonical: "/contact/" },
 };
 
 export default function ContactPage() {

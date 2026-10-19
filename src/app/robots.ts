@@ -1,6 +1,9 @@
 import type { MetadataRoute } from "next";
 import { site } from "@/config/site";
 
+// Pre-render at build time (required for the static export to GitHub Pages).
+export const dynamic = "force-static";
+
 /**
  * Indexing is allowed only on the production deployment. Set
  * NEXT_PUBLIC_ALLOW_INDEXING=true in the production environment; previews
