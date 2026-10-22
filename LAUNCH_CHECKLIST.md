@@ -1,7 +1,7 @@
 # Launch-readiness checklist
 
 Everything below needs **real business information or an operational
-decision** before assistedshopping.online goes live. Items are grouped by
+decision** before shoppingassists.online goes live. Items are grouped by
 risk. Nothing in this repository has been verified against a real phone line,
 legal review, or production host.
 
@@ -82,13 +82,13 @@ In `src/config/site.ts → business`:
 ## 4. Technical setup
 
 - [ ] Deploy (see README → Deployment) and attach the
-      `assistedshopping.online` domain with HTTPS.
+      `shoppingassists.online` domain with HTTPS.
 - [ ] Decide on `www` vs apex and redirect one to the other; keep
       `site.url` consistent.
 - [ ] Set `NEXT_PUBLIC_ALLOW_INDEXING=true` in **production only**, rebuild,
-      and verify `https://assistedshopping.online/robots.txt` allows
+      and verify `https://shoppingassists.online/robots.txt` allows
       crawling and lists the sitemap.
-- [ ] Submit `https://assistedshopping.online/sitemap.xml` in Google Search
+- [ ] Submit `https://shoppingassists.online/sitemap.xml` in Google Search
       Console and Bing Webmaster Tools.
 - [ ] Contact form: either set `NEXT_PUBLIC_FORM_ENDPOINT` to a real,
       monitored service (and test a submission end-to-end), or remove the

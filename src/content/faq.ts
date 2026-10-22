@@ -2,8 +2,8 @@ export type FaqItem = { q: string; a: string };
 
 export const faqs: FaqItem[] = [
   {
-    q: "Is Assisted Shopping affiliated with a retailer?",
-    a: "No. Assisted Shopping is an independent service and is not affiliated with or endorsed by any retailer or manufacturer.",
+    q: "Is Shopping Assists affiliated with a retailer?",
+    a: "No. Shopping Assists is an independent service and is not affiliated with or endorsed by any retailer or manufacturer.",
   },
   {
     q: "Is this a free service?",

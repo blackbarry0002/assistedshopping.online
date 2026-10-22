@@ -33,7 +33,7 @@ export async function submitServiceRequest(data: ServiceRequest): Promise<Submit
     const res = await fetch(FORM_ENDPOINT, {
       method: "POST",
       headers: { "Content-Type": "application/json", Accept: "application/json" },
-      body: JSON.stringify({ ...data, source: "assistedshopping.online/contact" }),
+      body: JSON.stringify({ ...data, source: "shoppingassists.online/contact" }),
     });
     return res.ok ? { ok: true } : { ok: false, reason: "rejected" };
   } catch {

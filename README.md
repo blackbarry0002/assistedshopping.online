@@ -1,6 +1,6 @@
-# Assisted Shopping — assistedshopping.online
+# Shopping Assists — shoppingassists.online
 
-Marketing website for **Assisted Shopping**, an independent, human-led, paid
+Marketing website for **Shopping Assists**, an independent, human-led, paid
 shopping-assistance service for customers in the United States.
 
 The site has one main conversion: **a phone call**. Every design decision
@@ -182,7 +182,7 @@ provider's reporting.
 - Title, description, Open Graph and Twitter metadata in `src/app/layout.tsx`;
   per-page titles/descriptions/canonicals in each `page.tsx`.
 - `metadataBase` and canonical URLs use `site.url`
-  (`https://assistedshopping.online`).
+  (`https://shoppingassists.online`).
 - `/sitemap.xml` lists public pages; update `LAST_MODIFIED` in
   `src/app/sitemap.ts` when content changes.
 - `/robots.txt` blocks crawling unless `NEXT_PUBLIC_ALLOW_INDEXING=true`.
@@ -202,7 +202,7 @@ deployed to GitHub Pages by `.github/workflows/nextjs.yml` on every push to
 Repository settings that must stay in place:
 
 - **Settings → Pages → Source:** GitHub Actions.
-- **Settings → Pages → Custom domain:** `assistedshopping.online`, with
+- **Settings → Pages → Custom domain:** `shoppingassists.online`, with
   "Enforce HTTPS" enabled once the certificate is issued. `public/CNAME`
   carries the same domain.
 - **DNS:** apex `A` records to GitHub Pages (185.199.108.153, .109.153,
