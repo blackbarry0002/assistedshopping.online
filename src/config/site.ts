@@ -1,5 +1,5 @@
 /**
- * Central site configuration for Shopping Assists.
+ * Central site configuration for Assisted Shopping.
  *
  * Everything that is business-specific (brand, phone, navigation, service
  * categories, legal links) lives here so it can be changed in one place.
@@ -32,18 +32,18 @@ export const phone = {
 export const telHref = `tel:${phone.e164}`;
 
 export const site = {
-  name: "Shopping Assists",
-  domain: "shoppingassists.online",
-  url: "https://shoppingassists.online",
+  name: "Assisted Shopping",
+  domain: "assistedshoppings.online",
+  url: "https://assistedshoppings.online",
   tagline: "Shop smarter. Choose confidently.",
   promise:
     "Tell us what you're looking for. A real person will help you work through your options.",
   description:
-    "Get independent, personalized help comparing products, finding parts, and planning shopping lists. Call Shopping Assists to discuss our paid guidance services.",
-  seoTitle: "Shopping Assists | Independent Product Research & Shopping Guidance",
+    "Get independent, personalized help comparing products, finding parts, and planning shopping lists. Call Assisted Shopping to discuss our paid guidance services.",
+  seoTitle: "Assisted Shopping | Independent Product Research & Shopping Guidance",
   /** One-sentence business description used in the footer. */
   summary:
-    "Shopping Assists is an independent, paid service that helps people in the United States research products, compare options, and plan purchases with a real person.",
+    "Assisted Shopping is an independent, paid service that helps people in the United States research products, compare options, and plan purchases with a real person.",
   market: "United States",
 } as const;
 

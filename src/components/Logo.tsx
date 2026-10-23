@@ -2,7 +2,7 @@ import Link from "next/link";
 import { site } from "@/config/site";
 
 /**
- * Original Shopping Assists mark: a conversation bubble holding a shopping
+ * Original Assisted Shopping mark: a conversation bubble holding a shopping
  * cart, with a check badge on the corner — "talk it through, choose
  * confidently". The same SVG is used by icon.svg, apple-icon and the OG image.
  *
@@ -39,7 +39,7 @@ export function Wordmark({ className = "" }: { className?: string }) {
     <span className={`flex items-center gap-2.5 ${className}`}>
       <LogoMark />
       <span className="text-[1.0625rem] leading-none font-semibold tracking-[-0.02em] text-fg">
-        Shopping<span className="text-accent">·</span>Assists
+        Assisted<span className="text-accent">·</span>Shopping
       </span>
     </span>
   );

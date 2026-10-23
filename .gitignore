@@ -46,3 +46,6 @@ next-env.d.ts
 
 # internal operations manuals (not for the public repo)
 /manuals/
+
+# local Node runtime (this Mac has no system Node)
+/.tools/

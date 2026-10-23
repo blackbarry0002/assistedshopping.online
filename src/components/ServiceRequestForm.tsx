@@ -215,7 +215,7 @@ export function ServiceRequestForm() {
             className="mt-1 h-5 w-5 shrink-0 accent-[#ff6a00]"
           />
           <label htmlFor={f("consent")} className="text-sm leading-relaxed text-muted">
-            I agree that Shopping Assists may contact me by email or phone about this request.
+            I agree that Assisted Shopping may contact me by email or phone about this request.
             I understand personalized assistance is a paid service and that I&apos;ll be told the
             price before any paid work begins.
           </label>
